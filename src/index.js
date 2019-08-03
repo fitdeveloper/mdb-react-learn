@@ -56,6 +56,21 @@ class App extends Component {
         };
     }
 
+    handleDelete = eventId => {
+        const events = this.state.events.filter(e => e.id !== eventId);
+        this.setState({ events });
+    };
+
+
+    handleInputChange = inputName => value => {
+        const nextValue = value;
+        console.log(this.state);
+        this.setState({
+            [inputName]: nextValue
+        });
+    };
+
+
 
     toggleModal = () => {
         this.setState({
@@ -63,14 +78,9 @@ class App extends Component {
         });
     };
 
-    handleDelete = eventId => {
-        const events = this.state.events.filter(e => e.id !== eventId);
-        this.setState({ events });
-    };
+
 
     myFunction() {
-
-
         var myArray = [];
         var i;
         for (i = 0; i < this.state.events.length; i++) {
@@ -87,263 +97,151 @@ class App extends Component {
             );
         }
         return myArray;
-
-
-        // var  text = "";
-        // var i;
-        // for(i = 0 ; i< 5 ; i++ ){
-        //     text += " the number  is " + i + " ";
-        // }
-        // return text;
     }
 
 
-    handleInputChange = inputName => value => {
-        const nextValue = value;
+    addEvent = () => {
+        var newArray = [...this.state.events];
+        newArray.push({
+            id: newArray.length ? newArray[newArray.length - 1].id + 1 : 1,
+            time: this.state.time,
+            title: this.state.title,
+            location: this.state.location,
+            description: this.state.description,
+            value: this.var > 5 ? "Its's grater then 5" : "Its lower or equal 5"
+        });
+        this.setState({ events: newArray });
         this.setState({
-            [inputName]: nextValue
+            time: "",
+            title: "",
+            location: "",
+            description: ""
         });
     };
 
     render() {
         return (
             <React.Fragment>
-                {/* // <MDBContainer>
-            //     <MDBRow>
-            //         <MDBCol lg="6" >Left column</MDBCol>
-            //         <MDBCol lg="6" >Right column</MDBCol>
-            //     </MDBRow>
-            // </MDBContainer> */}
-                {/* <MDBContainer>
-                <MDBRow>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-                <MDBCol xl="1" lg="2" md="4" sm="6" size="12">xl=1 lg=2 md=4 sm=6 xs=12</MDBCol>
-            </MDBRow>
-            </MDBContainer> */}
-
-                {/* <MDBContainer>
+                <MDBContainer>
                     <MDBRow>
-                        <MDBCol md="9">
-                            {this.myFunction()} */}
-                {/*  using maps here look code bellow   */}
-                {/* {this.state.events.map(event => (
-                                <Event time={event.time} title={event.title} />
-                            ))} */}
-
-
-
-                {/* <Event title="this the agenda title" time="12/21/1223">
-                                Meeting with John
-                            </Event> */}
-                {/* </MDBCol>
-                        <MDBCol md="3" >
+                        <MDBCol md="9" className="mb-r">
+                            <h2 className="text-uppercase my-3">Today:</h2>
+                            <div id="schedule-items">
+                                {this.state.events.map(event => (
+                                    <Event
+                                        key={event.id}
+                                        id={event.id}
+                                        time={event.time}
+                                        title={event.title}
+                                        location={event.location}
+                                        description={event.description}
+                                        onDelete={this.handleDelete}
+                                    />
+                                ))}
+                            </div>
+                            <MDBRow className="mb-4">
+                                <MDBCol xl="3" md="6" className="mx-auto text-center">
+                                    <MDBBtn color="info" rounded onClick={this.toggleModal}>
+                                        Add Event
+                                        </MDBBtn>
+                                </MDBCol>
+                            </MDBRow>
+                        </MDBCol>
+                        <MDBCol md="3">
+                            <h3 className="text-uppercase my-3">Schedule</h3>
+                            <h6 className="my-3">
+                                It's going to be busy that today. You have{" "}
+                                <b>{this.state.events.length} events </b> today.
+                               </h6>
+                            <h1 className="my-3">
+                                <MDBRow>
+                                    <MDBCol xs="3" className="text-center">
+                                        <MDBIcon icon="sun" fixed />
+                                    </MDBCol>
+                                    <MDBCol xs="9">Sunny</MDBCol>
+                                </MDBRow>
+                                <MDBRow>
+                                    <MDBCol xs="3" className="text-center">
+                                        <MDBIcon icon="thermometer-three-quarters" fixed />
+                                    </MDBCol>
+                                    <MDBCol xs="9">23°C</MDBCol>
+                                </MDBRow>
+                            </h1>
+                            <p>
+                                Don't forget your sunglasses. Today will dry and sunny, becoming
+                                warm in the afternoon with temperatures of between 20 and 25
+                                degrees.
+                                </p>
                         </MDBCol>
                     </MDBRow>
-                </MDBContainer> */}
+                </MDBContainer>
 
-                <React.Fragment>
-                    <MDBContainer>
-                        <MDBRow>
-                            <MDBCol md="9" className="mb-r">
-                                <h2 className="text-uppercase my-3">Today:</h2>
-                                <div id="schedule-items">
-                                    {this.state.events.map(event => (
-                                        <Event
-                                            key={event.id}
-                                            id={event.id}
-                                            time={event.time}
-                                            title={event.title}
-                                            location={event.location}
-                                            description={event.description}
-                                            onDelete={this.handleDelete}
-                                        />
-                                    ))}
-                                </div>
-                                <MDBRow className="mb-4">
-                                    <MDBCol xl="3" md="6" className="mx-auto text-center">
-                                        <MDBBtn color="info" rounded onClick={this.toggleModal}>
-                                            Add Event
-                  </MDBBtn>
-                                    </MDBCol>
-                                </MDBRow>
-                            </MDBCol>
-                            <MDBCol md="3">
-                                <h3 className="text-uppercase my-3">Schedule</h3>
-                                <h6 className="my-3">
-                                    It's going to be busy that today. You have{" "}
-                                    <b>{this.state.events.length} events </b> today.
-              </h6>
-                                <h1 className="my-3">
-                                    <MDBRow>
-                                        <MDBCol xs="3" className="text-center">
-                                            <MDBIcon icon="sun" fixed />
-                                        </MDBCol>
-                                        <MDBCol xs="9">Sunny</MDBCol>
-                                    </MDBRow>
-                                    <MDBRow>
-                                        <MDBCol xs="3" className="text-center">
-                                            <MDBIcon icon="thermometer-three-quarters" fixed />
-                                        </MDBCol>
-                                        <MDBCol xs="9">23°C</MDBCol>
-                                    </MDBRow>
-                                </h1>
-                                <p>
-                                    Don't forget your sunglasses. Today will dry and sunny, becoming
-                                    warm in the afternoon with temperatures of between 20 and 25
-                                    degrees.
-              </p>
-                            </MDBCol>
-                        </MDBRow>
-                    </MDBContainer>
-
-                    <MDBModal isOpen={this.state.modal} toggle={this.toggleModal}>
-                        <MDBModalHeader
-                            className="text-center"
-                            titleClass="w-100 font-weight-bold"
-                            toggle={this.toggleModal}
-                        >
-                            Add new event
+                <MDBModal isOpen={this.state.modal} toggle={this.toggleModal}>
+                    <MDBModalHeader
+                        className="text-center"
+                        titleClass="w-100 font-weight-bold"
+                        toggle={this.toggleModal}
+                    >
+                        Add new event
                         </MDBModalHeader>
-                        <MDBModalBody>
-                            <form className="mx-3 grey-text">
-                                <MDBInput
-                                    name="time"
-                                    label="Time"
-                                    icon="clock"
-                                    hint="12:30"
-                                    group
-                                    type="text"
-                                    getValue={this.handleInputChange("time")}
-                                />
-                                <MDBInput
-                                    name="title"
-                                    label="Title"
-                                    icon="edit"
-                                    hint="Briefing"
-                                    group
-                                    type="text"
-                                    getValue={this.handleInputChange("title")}
-                                />
-                                <MDBInput
-                                    name="location"
-                                    label="Location (optional)"
-                                    icon="map"
-                                    group
-                                    type="text"
-                                    getValue={this.handleInputChange("location")}
-                                />
-                                <MDBInput
-                                    name="description"
-                                    label="Description (optional)"
-                                    icon="sticky-note"
-                                    group
-                                    type="textarea"
-                                    getValue={this.handleInputChange("description")}
-                                />
-                            </form>
-                        </MDBModalBody>
-                        <MDBModalFooter className="justify-content-center">
-                        </MDBModalFooter>
-                    </MDBModal>
-                </React.Fragment>
+                    <MDBModalBody>
+                        <form className="mx-3 grey-text">
+                            <MDBInput
+                                name="time"
+                                label="Time"
+                                icon="clock"
+                                hint="12:30"
+                                group
+                                type="text"
+                                getValue={this.handleInputChange("time")}
+                            />
+                            <MDBInput
+                                name="title"
+                                label="Title"
+                                icon="edit"
+                                hint="Briefing"
+                                group
+                                type="text"
+                                getValue={this.handleInputChange("title")}
+                            />
+                            <MDBInput
+                                name="location"
+                                label="Location (optional)"
+                                icon="map"
+                                group
+                                type="text"
+                                getValue={this.handleInputChange("location")}
+                            />
+                            <MDBInput
+                                name="description"
+                                label="Description (optional)"
+                                icon="sticky-note"
+                                group
+                                type="textarea"
+                                getValue={this.handleInputChange("description")}
+                            />
+                        </form>
+                    </MDBModalBody>
+                    <MDBModalFooter className="justify-content-center">
+                        <MDBBtn
+                            color="info"
+                            onClick={() => {
+                                this.toggleModal();
+                                this.addEvent();
+                            }}
+                        >
+                            Add
+                        </MDBBtn>
+                    </MDBModalFooter>
+                </MDBModal>
             </React.Fragment>
         );
     }
 }
 
-
-
-// 7 . state 
-/* 
-
--- passing data from class to another. 
--- tag values (call from the parent): this.props.children 
--- tag attributes ( call from the parent ): this.props.[NameAttribute]
--- curly braces : to render anything dynamically in react { valide JS Expression }
--- Immurabilty of props can't be changed  props ( read only in parent )  ==> solution  == > state . 
--- to change value we simply can use setState()
--- Asynchrounous request ==>  setState() == reRender
--- Combining state and object 
-
-
-*/
-
-
-// 8 . Loops and map 
-/* we can either use loop for inside function js and then call is on JSX or just use map fucntions
-{this.state.events.map(event => (
-    <Event time={event.time} title={event.title} />
-  ))}
-
-  for not working directly on the render
-  map work directly on render 
-
-  each value on map / loop should have a key 
-
-*/
-
-
-// 9 . if else in react 
-/*
-
-function Hello(props) {
-    const isLoggedIn = props.isLoggedIn;
-    if (isLoggedIn) {
-      return "Hello!";
-    }
-    return "Please login first!";
-  }
-  ReactDOM.render(
-    // Try changing to isLoggedIn={true}:
-    <Hello isLoggedIn={false} />,
-    document.getElementById("root")
-  );
-
-*/
-
-
-// 10 . delete events -> using handle
-/*   
-
-*/
 class Event extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         time: this.props.time,
-    //         title:  this.props.title,
-    //     }
-    // }
     render() {
         return (
-            //     <React.Fragment>
-            //         <h3>{this.props.time} -9:00 - {this.props.title}</h3>
-            //         {this.props.location && <h6>Location: {this.props.location}</h6>}
-            //         {this.props.description && (
-            //             <p className="p-2 mb-4  blue-grey lighten-5 blue-grey lighten-5">
-            //                 {this.props.description}
-            //             </p>
-            //         )}
-            //         {/* <button
-            //     onClick={() => {
-            //       this.setState({ title: "Me NEW state title" });
-            //       console.log(this.state.title);
-            //     }}
-            //   >
-            //     Change state title
-            //   </button> */}
-
-            //     </React.Fragment>
             <React.Fragment>
                 <div className="media mt-1">
                     <h3 className="h3-responsive font-weight-bold mr-3">
@@ -353,8 +251,8 @@ class Event extends Component {
                         <MDBBadge color="danger" className="ml-2 float-right" onClick={() => this.props.onDelete(this.props.id)}
                         >
                             -
-            </MDBBadge>
-                        <h6 className="mt-0 font-weight-bold">{this.props.title} </h6>{" "}
+                        </MDBBadge>
+                        <h6 className="mt-0 font-weight-bold">{this.props.title} - id : {this.props.id} </h6>{" "}
                         <hr className="hr-bold my-2" />
                         {this.props.location && (
                             <React.Fragment>
@@ -375,44 +273,3 @@ class Event extends Component {
     }
 }
 ReactDOM.render(<App />, document.getElementById("root"));
-
-
-// constructor() {
-//     super();
-//     this.vatTime = "12:00";
-//     this.varTitle = "My variable title";
-// }
-
-
-
-{/* <p>Result: {2 + 2}</p> */ }
-{/* <p>Result: {this.state.id + 10}</p>
-                <p>Result: {Date.now()}</p>
-                <h3>
-                    State:
-                    {this.state.time} - {this.state.title}
-                </h3>
-                <h3>
-                    Variable:
-                    {this.vatTime} - {this.varTitle}
-                </h3>
-                <button onClick={
-                    function () {
-                         this.state.title = " new state updated "; // this not working in the DOM because not rendring the new value 
-                         this.setState({ 
-                             title : " new state updated"
-                         })
-                        console.log(this.state.title);
-                    }.bind(this)
-                }>
-                    Change my title state </button>
-
-                <button onClick={
-                    function () {
-                        this.varTitle = " new state updated ";
-                        console.log(this.varTitle);
-                    }.bind(this)
-                }>
-                    Change my title state </button> */}
-
-{/* <button onClick={ (this.props.title = "new Title")}>Change my title</button> */ }
