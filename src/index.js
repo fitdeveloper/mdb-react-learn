@@ -30,28 +30,7 @@ class App extends Component {
         this.state = {
             modal: false,
             events: [
-                {
-                    id: 1,
-                    time: "10:00",
-                    title: "Breakfast with Simon",
-                    location: "Lounge Caffe",
-                    description: "Discuss Q3 targets"
-                },
-                {
-                    id: 2,
-                    time: "10:30",
-                    title: "Daily Standup Meeting (recurring)",
-                    location: "Warsaw Spire Office"
-                },
-                { id: 3, time: "11:00", title: "Call with HRs" },
-                {
-                    id: 4,
-                    time: "11:00",
-                    title: "Lunch with Timothy",
-                    location: "Canteen",
-                    description:
-                        "Project evaluation ile declaring a variable and using an if statement is a fine way to conditionally render a component, sometimes you might want to use a"
-                }
+               
             ]
         };
     }
@@ -80,24 +59,26 @@ class App extends Component {
 
 
 
-    myFunction() {
-        var myArray = [];
-        var i;
-        for (i = 0; i < this.state.events.length; i++) {
-            myArray[i] = (
-                <Event
-                    key={this.state.events[i].id}
-                    id={this.state.events[i].id}
-                    time={this.state.events[i].time}
-                    title={this.state.events[i].title}
-                    location={this.state.events[i].location}
-                    description={this.state.events[i].description}
+    // myFunction() {
+    //     var myArray = [];
+    //     var i;
+    //     for (i = 0; i < this.state.events.length; i++) {
+    //         myArray[i] = (
+    //             <Event
+    //                 key={this.state.events[i].id}
+    //                 id={this.state.events[i].id}
+    //                 time={this.state.events[i].time}
+    //                 title={this.state.events[i].title}
+    //                 location={this.state.events[i].location}
+    //                 description={this.state.events[i].description}
 
-                />
-            );
-        }
-        return myArray;
-    }
+    //             />
+    //         );
+    //     }
+    //     return myArray;
+    // }
+
+
 
 
     addEvent = () => {
